@@ -131,7 +131,21 @@ function jqrpgBindKeys() {
 		jqrpgSetPlayerFace('r');
 		return jqrpgMovePlayer(1, 0);
 	})
-	.bind('keypress', 'Space', function() {
+	.bind('keydown', 'a', function() {
+		// if (console) console.log('space');
+		if (jqr.p.state == 'map') return false;
+		jqr.settings.space = true;
+		if (jqr.p.state == 'battle') jqrpgBattle();
+		return true;
+	})
+	.bind('keydown', 'b', function() {
+		// if (console) console.log('space');
+		if (jqr.p.state == 'map') return false;
+		jqr.settings.space = true;
+		if (jqr.p.state == 'battle') jqrpgBattle();
+		return true;
+	})
+	.bind('keydown', 'c', function() {
 		// if (console) console.log('space');
 		if (jqr.p.state == 'map') return false;
 		jqr.settings.space = true;
