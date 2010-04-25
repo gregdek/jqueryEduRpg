@@ -1,0 +1,133 @@
+html,body,div,h1,h2,h3,h4,h5,h6,ul,ol,dl,li,dt,dd,p,blockquote,pre,form,fieldset,table,th,td{margin: 0;padding: 0;}
+html,body{height:100%;}
+a,input{outline:0;}
+a img{border:0;}
+/* ************************************************************************** *\
+ * ********************************* Layout ********************************* *
+\* ************************************************************************** */
+body {
+ background: #333;
+ font: 62.5%/1.62 Helvetica, Arial, Sans-serif;
+}
+
+#everything {
+ overflow: hidden;
+}
+
+#information {
+ background: #111;
+ border: 16px #222 solid;
+ color: #fff;
+ float: left;
+ margin: 50px 0 0;
+ padding: 1em 2em;
+ width: 480px;
+}
+#information p {
+ font-size: 1.4em;
+ line-height: 1.62;
+ margin: 0 1em 0.5em;
+}
+#information h1 {
+ font: 2em/1 Georgia, Times, Serif;
+ margin: 0.5em 0;
+}
+#information h2 {
+ font: 700 1.5em/1 Georgia, Times, Serif;
+ margin: 1em 0 0.5em;
+}
+#information ul {
+ margin: 0 2em 0.5em;
+}
+#information a {
+ border-bottom: 1px #ffa dotted;
+ color: #ffa;
+ padding: 0 2px;
+ text-decoration: none;
+}
+#jqrpg_preloader {
+ height: 0px;
+ overflow: hidden;
+ width: 0px;
+}
+#jqrpg_wrapper {
+ border: 16px #000 solid;
+ border-radius: 8px; -moz-border-radius: 8px;
+ float: left;
+ margin: 50px;
+ overflow: hidden;
+ position: relative;
+}
+#jqrpg_screen {
+ background: #000;
+ overflow: hidden;
+ position: relative;
+ z-index: 0;
+}
+#jqrpg_menu {
+ background: #000;
+ background: rgba(0,0,0,0.5);
+ bottom: 0;
+ color: #fff;
+ font: 8px/1 'Consolas', 'Lucida Console', Monaco, Monospace;
+ overflow: hidden;
+ padding: 1em;
+ position: absolute;
+ width: 100%;
+}
+#jqrpg_map {
+ display: none;
+}
+	#jqrpg_map span,
+	#jqrpg_player,
+	.sprites {
+	 background-repeat: no-repeat;
+	 display: block;
+	 height: 0;
+	 line-height: 1;
+	 overflow: hidden;
+	 padding: 16px 0 0;
+	 width: 16px;
+	}
+	#jqrpg_player {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 999;
+	}
+	.face_u {
+	 background-image: url(images/link_u.gif);
+	}
+	.face_d {
+	 background-image: url(images/link_d.gif);
+	}
+	.face_l {
+	 background-image: url(images/link_l.gif);
+	}
+	.face_r {
+	 background-image: url(images/link_r.gif);
+	}
+#jqrpg_map span.tile {
+ float: left;
+}
+.tile_row {
+ clear: left;
+}
+.tile {
+ background: #222;
+}
+.tile_00 { /* grass */
+ background: #242;
+}
+.tile_01 { /* dirt */
+ background: #442;
+}
+.tile_02 { /* rock */
+ background: #444;
+}
+.tile_03 { /* water */
+ background: #224;
+}
+.tile_11 { /* water */
+ background: #222;
+}
