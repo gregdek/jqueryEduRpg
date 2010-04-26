@@ -50,6 +50,8 @@ jqr.quiz.questions = [
 jqr.quiz.answers = [
   'b','b','c'
 ];
+jqr.quiz.questionsAsked = 0;
+jqr.quiz.correctAnswers = 0;
 
 jqr.battle = new Object();
 
@@ -192,6 +194,7 @@ function jqrpgGetRandomBattle() {
 }
 function jqrpgBattleInit() {
 	jqr.p.state = 'battle';
+        jqr.quiz.questionsAsked += 1;
         var questionNumber = Math.floor(Math.random() * 3);
         jqr.settings.currentAnswer = jqr.quiz.answers[questionNumber];
 	m = $('#jqrpg_menu');
@@ -201,20 +204,35 @@ function jqrpgBattleInit() {
            return jqr.quiz.questions[questionNumber];
         });
 	// ]]>
-	$('#jqrpg_wrapper').css({'border-color' : '#a00'});
+	$('#jqrpg_wrapper').css({'border-color' : '#00a'});
 }
+
 function jqrpgBattle(battleAnswer) {
 	// if (jqr.settings.space) {
 	if (battleAnswer == jqr.settings.currentAnswer) {
 		// jqr.settings.space = false;
 		jqr.settings.currentAnswer = '';
-		jqrpgBattleEnd();
-	}
+		jqrpgBattleEnd('win');
+	} else {
+                jqr.settings.currentAnswer = '';
+                jqrpgBattleEnd('lose');
+        }
 }
-function jqrpgBattleEnd() {
+
+function jqrpgBattleEnd(winOrLose) {
 	jqr.p.state = 'map';
+        if (winOrLose == 'win') {
+            jqr.quiz.correctAnswers += 1;
+            m.html(function() {
+               return "Right! " + jqr.quiz.correctAnswers + "/" + jqr.quiz.questionsAsked;
+            });
+        } else {
+            m.html(function() {
+               return "Wrong! " + jqr.quiz.correctAnswers + "/" + jqr.quiz.questionsAsked;
+            });
+        }
+	m.delay(1000).fadeOut('slow');
 	$('#jqrpg_wrapper').css({'border-color' : '#000'});
-	m.fadeOut('fast');
 }
 
 });
