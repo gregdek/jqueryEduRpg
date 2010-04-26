@@ -6,6 +6,7 @@ jqr.settings = new Object();
 jqr.settings.sprite_width = 16;
 jqr.settings.sprite_height = 16;
 jqr.settings.space = false;
+jqr.settings.currentAnswer = '';
 
 jqr.p = new Object();
 function jqrpgResetPlayer() {
@@ -135,21 +136,21 @@ function jqrpgBindKeys() {
 		// if (console) console.log('space');
 		if (jqr.p.state == 'map') return false;
 		jqr.settings.space = true;
-		if (jqr.p.state == 'battle') jqrpgBattle();
+		if (jqr.p.state == 'battle') jqrpgBattle('a');
 		return true;
 	})
 	.bind('keydown', 'b', function() {
 		// if (console) console.log('space');
 		if (jqr.p.state == 'map') return false;
 		jqr.settings.space = true;
-		if (jqr.p.state == 'battle') jqrpgBattle();
+		if (jqr.p.state == 'battle') jqrpgBattle('b');
 		return true;
 	})
 	.bind('keydown', 'c', function() {
 		// if (console) console.log('space');
 		if (jqr.p.state == 'map') return false;
 		jqr.settings.space = true;
-		if (jqr.p.state == 'battle') jqrpgBattle();
+		if (jqr.p.state == 'battle') jqrpgBattle('c');
 		return true;
 	});
 }
@@ -192,6 +193,7 @@ function jqrpgGetRandomBattle() {
 function jqrpgBattleInit() {
 	jqr.p.state = 'battle';
         var questionNumber = Math.floor(Math.random() * 3);
+        jqr.settings.currentAnswer = jqr.quiz.answers[questionNumber];
 	m = $('#jqrpg_menu');
 	m.show();
 	// <![CDATA[
@@ -201,9 +203,11 @@ function jqrpgBattleInit() {
 	// ]]>
 	$('#jqrpg_wrapper').css({'border-color' : '#a00'});
 }
-function jqrpgBattle() {
-	if (jqr.settings.space) {
-		jqr.settings.space = false;
+function jqrpgBattle(battleAnswer) {
+	// if (jqr.settings.space) {
+	if (battleAnswer == jqr.settings.currentAnswer) {
+		// jqr.settings.space = false;
+		jqr.settings.currentAnswer = '';
 		jqrpgBattleEnd();
 	}
 }
