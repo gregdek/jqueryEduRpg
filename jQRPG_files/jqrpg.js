@@ -43,12 +43,19 @@ jqr.map.terrain_walkable = [
 
 jqr.quiz = new Object();
 jqr.quiz.questions = [
-  '<p>What is the capital of Maryland:</p><p>(a) Baltimore, (b) Annapolis, (c) Washington DC?</p>',
-  '<p>What is the capital of Virginia:</p><p>(a) Alexandria, (b) Richmond, (c) Norfolk?</p>',
-  '<p>What is the capital of North Carolina:</p></p>(a) Charlotte, (b) Durham, (c) Raleigh?</p>'
+  '<p>Which is longer? (a) 100 centimeters, (b) 1 meter, or (c) They are the same?</p>',
+  '<p>Which is shorter? (a) 100 centimeters, (b) 1 meter, or (c) They are the same?</p>',
+  '<p>Which is longer? (a) 5000 meters, (b) 2 kilometers, or (c) They are the same?</p>',
+  '<p>Which is shorter? (a) 5000 meters, (b) 2 kilometers, or (c) They are the same?</p>',
+  '<p>Which is longer? (a) 200 meters, (b) 1 kilometer, or (c) They are the same?</p>',
+  '<p>Which is shorter? (a) 200 meters, (b) 1 kilometer, or (c) They are the same?</p>',
+  '<p>Which is taller? (a) 2 meters, (b) 400 centimeters, or (c) They are the same?</p>',
+  '<p>Which is shorter? (a) 2 meters, (b) 400 centimeters, or (c) They are the same?</p>',
+  '<p>Which is bigger? (a) 50 kilograms, (b) 2500 grams, or (c) They are the same?</p>',
+  '<p>Which is smaller? (a) 50 kilograms, (b) 2500 grams, or (c) They are the same?</p>'
 ];
 jqr.quiz.answers = [
-  'b','b','c'
+  'c','c','a','b','b','a','b','a','a','b'
 ];
 jqr.quiz.questionsAsked = 0;
 jqr.quiz.correctAnswers = 0;
@@ -195,7 +202,7 @@ function jqrpgGetRandomBattle() {
 function jqrpgBattleInit() {
 	jqr.p.state = 'battle';
         jqr.quiz.questionsAsked += 1;
-        var questionNumber = Math.floor(Math.random() * 3);
+        var questionNumber = Math.floor(Math.random() * jqr.quiz.answers.length);
         jqr.settings.currentAnswer = jqr.quiz.answers[questionNumber];
 	m = $('#jqrpg_menu');
 	m.show();
