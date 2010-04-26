@@ -231,7 +231,7 @@ function jqrpgBattleEnd(winOrLose) {
                return "Wrong! " + jqr.quiz.correctAnswers + "/" + jqr.quiz.questionsAsked;
             });
         }
-	m.delay(1000).fadeOut('slow');
+        m.fadeOut('slow');
 	$('#jqrpg_wrapper').css({'border-color' : '#000'});
 }
 
