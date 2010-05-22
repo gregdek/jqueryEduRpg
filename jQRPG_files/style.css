@@ -116,18 +116,18 @@ body {
 .tile {
  background: #222;
 }
-.tile_00 { /* grass */
+.tile__ { /* grass */
  background: #242;
 }
-.tile_01 { /* dirt */
+.tile_1 { /* dirt */
  background: #442;
 }
-.tile_02 { /* rock */
+.tile_2 { /* rock */
  background: #444;
 }
-.tile_03 { /* water */
+.tile_3 { /* water */
  background: #224;
 }
-.tile_11 { /* water */
+.tile_x { /* water */
  background: #222;
 }
