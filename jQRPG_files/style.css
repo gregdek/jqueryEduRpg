@@ -119,15 +119,12 @@ body {
 .tile__ { /* grass */
  background: #242;
 }
-.tile_1 { /* dirt */
+.tile_o { /* path */
  background: #442;
 }
-.tile_2 { /* rock */
+.tile_x { /* rock */
  background: #444;
 }
-.tile_3 { /* water */
+.tile_w { /* water */
  background: #224;
-}
-.tile_x { /* water */
- background: #222;
 }

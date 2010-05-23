@@ -1,54 +1,15 @@
 /* google.setOnLoadCallback(function() { */
 $(function() {
 
-jqr = new Object();
-jqr.settings = new Object();
-jqr.settings.sprite_width = 16;
-jqr.settings.sprite_height = 16;
-jqr.settings.space = false;
-jqr.settings.currentAnswer = '';
-jqr.settings.currentMapId = 0;
-
-jqr.p = new Object();
-function jqrpgResetPlayer() {
-	jqr.p.face = 'd';
-	jqr.p.x = mapset.startx[jqr.settings.currentMapId];
-	jqr.p.y = mapset.starty[jqr.settings.currentMapId];
-	jqr.p.state = 'map';
-}
-
-jqr.map = new Object();
-jqr.map.terrain_walkable = [ '_', '1' ];
-
-function jqrpgResetMap(mapId) {
-    jqr.map.height 	= mapset.height[mapId];
-    jqr.map.width 	= mapset.width[mapId];
-    jqr.map.terrain	= mapset.picture[mapId];
-}
-
-jqrpgResetMap(jqr.settings.currentMapId);
-
-jqr.quizQuestionsAsked = 0;
-jqr.quizCorrectAnswers = 0;
-
-jqr.battle = new Object();
-
-jqrpgBuildMapHtml();
-jqrpgUpdateMapClasses();
-jqrpgResetPlayer();
-jqrpgSetPlayerFace(jqr.p.face);
-jqrpgSetPlayer(jqr.p.x, jqr.p.y);
-jqrpgBindKeys();
-
-/**
- * only call this once
- */
+// only call this once
 function jqrpgBuildInterface() {
 	$('#jqrpg_wrapper').width($('#jqrpg_screen').width());
 }
+
 function jqrpgBuildMapHtml() {
-	$('#jqrpg_screen, #jqrpg_wrapper').height(jqr.map.height * jqr.settings.sprite_height)
-	 .width(jqr.map.width * jqr.settings.sprite_width);
+	$('#jqrpg_screen, #jqrpg_wrapper').height(jqr.map.height 
+           * jqr.settings.sprite_height)
+	   .width(jqr.map.width * jqr.settings.sprite_width);
 	m = $('#jqrpg_map');
 	m.empty();
 	for (y = 0; y < jqr.map.height; y++) {
@@ -61,9 +22,21 @@ function jqrpgBuildMapHtml() {
 	}
 }
 
-/**
- * call this whenever enter a new screen
- */
+function jqrpgResetPlayer() {
+	jqr.p.face = 'd';
+	jqr.p.x = mapset.startx[jqr.settings.currentMapId];
+	jqr.p.y = mapset.starty[jqr.settings.currentMapId];
+	jqr.p.state = 'map';
+}
+
+function jqrpgResetMap(mapId) {
+    jqr.map.height 	= mapset.height[mapId];
+    jqr.map.width 	= mapset.width[mapId];
+    jqr.map.terrain	= mapset.picture[mapId];
+    jqr.map.portals     = mapset.portals[mapId];
+}
+
+// Call this whenever a new screen is entered 
 function jqrpgUpdateMapClasses() {
 	for (y = 0; y < jqr.map.height; y++) {
 		for (x = 0; x < jqr.map.width; x++) {
@@ -78,9 +51,11 @@ function jqrpgUpdateMapClasses() {
 	}
 	$('#jqrpg_map').fadeIn('slow');
 }
+
 function jqrpgSetPlayerFace(new_face) {
 	$('#jqrpg_player').removeClass().addClass('face_' + new_face);
 }
+
 function jqrpgSetPlayer(new_x, new_y) {
 	$('#jqrpg_player').css({
 	 'left' : new_x * jqr.settings.sprite_width,
@@ -88,9 +63,7 @@ function jqrpgSetPlayer(new_x, new_y) {
 	});
 }
 
-/**
- * key binding
- */
+// Key binding function
 function jqrpgBindKeys() {
 	$(document).bind('keydown', 'up', function() {
 		if (jqr.p.state != 'map') return false;
@@ -135,19 +108,42 @@ function jqrpgBindKeys() {
 	});
 }
 
-/**
- * movement
- */
+// Player movement function
 function jqrpgMovePlayer(new_x, new_y) {
-  	// if (console) console.log('x: ' + jqr.p.x + '  y: ' + jqr.p.y);
+
+  	// is new_x, new_y a legal move?
+
 	if (jqr.p.x + new_x + 1 > jqr.map.width
 	 || jqr.p.y + new_y + 1 > jqr.map.height
 	 || jqr.p.x + new_x + 1 == 0
 	 || jqr.p.y + new_y + 1 == 0
 	 || !jqrpgIsTileWalkable(jqr.p.x + new_x, jqr.p.y + new_y)
 	) return;
+
+        // will new_x, new_y take us to a new map?
+        // return with new map and new coords.
+
+        for (count=0; count<=jqr.map.portals[length]; count+=5) {
+            if (jqr.p.x + new_x == jqr.map.portals[count] 
+             && jqr.p.y + new_y == jqr.map.portals[count+1]
+            ) {
+              // FIXME
+              jqr.settings.currentMapId = jqr.map.portals[count+2];
+              jqr.p.x = jqr.map.portals[count+3];
+              jqr.p.y = jqr.map.portals[count+4];
+              jqrpgResetMap(jqr.settings.currentMapId);
+              jqrpgBuildMapHtml();
+              jqrpgUpdateMapClasses();
+	      jqr.p.state = 'map';
+              jqrpgSetPlayerFace(jqr.p.face);
+              jqrpgSetPlayer(jqr.p.x, jqr.p.y);
+              return;
+            }
+        }
+
 	jqr.p.x += new_x;	jqr.p.y += new_y;
-	
+        // regular move, animate the sequence normally
+
 	$('#jqrpg_player').dequeue().animate({
 	 left: jqr.p.x * jqr.settings.sprite_width,
 	 top: jqr.p.y * jqr.settings.sprite_height
@@ -158,18 +154,20 @@ function jqrpgMovePlayer(new_x, new_y) {
 	});
 	return true;
 }
+
 function jqrpgIsTileWalkable(x, y) {
-	return jQuery.inArray(jqr.map.terrain[(y) * 16 + x], jqr.map.terrain_walkable) > -1;
+	return jQuery.inArray(jqr.map.terrain[(y) * jqr.map.width + x], 
+               jqr.map.terrain_walkable) > -1;
 }
-/**
- * battle
- */
+
+// Battle functions
 function jqrpgGetRandomBattle() {
 	var likelihood = Math.floor(Math.random() * 6) + 1;
 	if (likelihood == 1) {
 		jqrpgBattleInit();
 	}
 }
+
 function jqrpgBattleInit() {
 	jqr.p.state = 'battle';
         jqr.quizQuestionsAsked += 1;
@@ -202,15 +200,48 @@ function jqrpgBattleEnd(winOrLose) {
         if (winOrLose == 'win') {
             jqr.quizCorrectAnswers += 1;
             m.html(function() {
-               return "Win! " + jqr.quizCorrectAnswers + "/" + jqr.quizQuestionsAsked;
+               return "Win! " + jqr.quizCorrectAnswers + "/" + 
+               jqr.quizQuestionsAsked;
             });
         } else {
             m.html(function() {
-               return "Fail! " + jqr.quizCorrectAnswers + "/" + jqr.quizQuestionsAsked;
+               return "Fail! " + jqr.quizCorrectAnswers + "/" + 
+               jqr.quizQuestionsAsked;
             });
         }
         m.fadeOut('slow');
 	$('#jqrpg_wrapper').css({'border-color' : '#000'});
 }
+
+// *****************
+// MAIN PROGRAM LOOP
+// *****************
+
+jqr = new Object();
+jqr.settings = new Object();
+jqr.settings.sprite_width = 16;
+jqr.settings.sprite_height = 16;
+jqr.settings.space = false;
+jqr.settings.currentAnswer = '';
+jqr.settings.currentMapId = 1;
+
+jqr.p = new Object();
+
+jqr.map = new Object();
+jqr.map.terrain_walkable = [ '_', 'o' ];
+
+jqrpgResetMap(jqr.settings.currentMapId);
+
+jqr.quizQuestionsAsked = 0;
+jqr.quizCorrectAnswers = 0;
+
+jqr.battle = new Object();
+
+jqrpgBuildMapHtml();
+jqrpgUpdateMapClasses();
+jqrpgResetPlayer();
+jqrpgSetPlayerFace(jqr.p.face);
+jqrpgSetPlayer(jqr.p.x, jqr.p.y);
+jqrpgBindKeys();
 
 });
