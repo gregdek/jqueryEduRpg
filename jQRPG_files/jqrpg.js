@@ -7,44 +7,29 @@ jqr.settings.sprite_width = 16;
 jqr.settings.sprite_height = 16;
 jqr.settings.space = false;
 jqr.settings.currentAnswer = '';
+jqr.settings.currentMapId = 0;
 
 jqr.p = new Object();
 function jqrpgResetPlayer() {
 	jqr.p.face = 'd';
-	jqr.p.x = 3;
-	jqr.p.y = 3;
+	jqr.p.x = mapset.startx[jqr.settings.currentMapId];
+	jqr.p.y = mapset.starty[jqr.settings.currentMapId];
 	jqr.p.state = 'map';
 }
 
 jqr.map = new Object();
-jqr.map.terrain_walkable = [ '_' ];
+jqr.map.terrain_walkable = [ '_', '1' ];
 
-function jqrpgResetMap(mapsetid) {
-    jqr.map.height 	= mapset.height[mapsetid];
-    jqr.map.width 	= mapset.width[mapsetid];
-    jqr.map.terrain	= mapset.picture[mapsetid];
+function jqrpgResetMap(mapId) {
+    jqr.map.height 	= mapset.height[mapId];
+    jqr.map.width 	= mapset.width[mapId];
+    jqr.map.terrain	= mapset.picture[mapId];
 }
 
-jqrpgResetMap(0);
+jqrpgResetMap(jqr.settings.currentMapId);
 
-jqr.quiz = new Object();
-jqr.quiz.questions = [
-  '<p>Which is longer? (a) 100 centimeters, (b) 1 meter, or (c) They are the same?</p>',
-  '<p>Which is shorter? (a) 100 centimeters, (b) 1 meter, or (c) They are the same?</p>',
-  '<p>Which is longer? (a) 5000 meters, (b) 2 kilometers, or (c) They are the same?</p>',
-  '<p>Which is shorter? (a) 5000 meters, (b) 2 kilometers, or (c) They are the same?</p>',
-  '<p>Which is longer? (a) 200 meters, (b) 1 kilometer, or (c) They are the same?</p>',
-  '<p>Which is shorter? (a) 200 meters, (b) 1 kilometer, or (c) They are the same?</p>',
-  '<p>Which is taller? (a) 2 meters, (b) 400 centimeters, or (c) They are the same?</p>',
-  '<p>Which is shorter? (a) 2 meters, (b) 400 centimeters, or (c) They are the same?</p>',
-  '<p>Which is bigger? (a) 50 kilograms, (b) 2500 grams, or (c) They are the same?</p>',
-  '<p>Which is smaller? (a) 50 kilograms, (b) 2500 grams, or (c) They are the same?</p>'
-];
-jqr.quiz.answers = [
-  'c','c','a','b','b','a','b','a','a','b'
-];
-jqr.quiz.questionsAsked = 0;
-jqr.quiz.correctAnswers = 0;
+jqr.quizQuestionsAsked = 0;
+jqr.quizCorrectAnswers = 0;
 
 jqr.battle = new Object();
 
@@ -187,14 +172,14 @@ function jqrpgGetRandomBattle() {
 }
 function jqrpgBattleInit() {
 	jqr.p.state = 'battle';
-        jqr.quiz.questionsAsked += 1;
-        var questionNumber = Math.floor(Math.random() * jqr.quiz.answers.length);
-        jqr.settings.currentAnswer = jqr.quiz.answers[questionNumber];
+        jqr.quizQuestionsAsked += 1;
+        var questionNumber = Math.floor(Math.random() * quiz.answers.length);
+        jqr.settings.quizCurrentAnswer = quiz.answers[questionNumber];
 	m = $('#jqrpg_menu');
 	m.show();
 	// <![CDATA[
         m.html(function() {
-           return jqr.quiz.questions[questionNumber];
+           return quiz.questions[questionNumber];
         });
 	// ]]>
 	$('#jqrpg_wrapper').css({'border-color' : '#00a'});
@@ -202,26 +187,26 @@ function jqrpgBattleInit() {
 
 function jqrpgBattle(battleAnswer) {
 	// if (jqr.settings.space) {
-	if (battleAnswer == jqr.settings.currentAnswer) {
+	if (battleAnswer == jqr.settings.quizCurrentAnswer) {
 		// jqr.settings.space = false;
-		jqr.settings.currentAnswer = '';
+		jqr.settings.quizCurrentAnswer = '';
 		jqrpgBattleEnd('win');
 	} else {
-                jqr.settings.currentAnswer = '';
-                jqrpgBattleEnd('lose');
+                jqr.settings.quizCurrentAnswer = '';
+                jqrpgBattleEnd('fail');
         }
 }
 
 function jqrpgBattleEnd(winOrLose) {
 	jqr.p.state = 'map';
         if (winOrLose == 'win') {
-            jqr.quiz.correctAnswers += 1;
+            jqr.quizCorrectAnswers += 1;
             m.html(function() {
-               return "Right! " + jqr.quiz.correctAnswers + "/" + jqr.quiz.questionsAsked;
+               return "Win! " + jqr.quizCorrectAnswers + "/" + jqr.quizQuestionsAsked;
             });
         } else {
             m.html(function() {
-               return "Wrong! " + jqr.quiz.correctAnswers + "/" + jqr.quiz.questionsAsked;
+               return "Fail! " + jqr.quizCorrectAnswers + "/" + jqr.quizQuestionsAsked;
             });
         }
         m.fadeOut('slow');
