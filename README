@@ -2,6 +2,6 @@ Derived from jQRPG, written by David O'Trakoun:
 
 http://hokuten.net/2010/jqrpg-%E2%80%94-an-old-school-style-rpg-in-jquery/
 
-The licensing of which is, at yet, unclear.  But working to figure that out.
+David has graciously allowed us to use his work for whatever purpose we see fit, so we've decided to license this work under the MIT license.
 
-Right now it's pretty self-explanatory.  Just plain ol' jquery/js/html.  We'll put more here later.
+Patches welcome.  :)
