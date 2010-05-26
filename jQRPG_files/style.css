@@ -75,11 +75,12 @@ body {
  position: absolute;
  width: 100%;
 }
+
 #jqrpg_map {
  display: none;
 }
 	#jqrpg_map span,
-	#jqrpg_player,
+	/* #jqrpg_player, */
 	.sprites {
 	 background-repeat: no-repeat;
 	 display: block;
@@ -107,6 +108,111 @@ body {
 	.face_r {
 	 background-image: url(images/link_r.gif);
 	}
+        #jqrpg_object0 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object1 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object2 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object3 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object4 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object5 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object6 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object7 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object8 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object9 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object10 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object11 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object12 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object13 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object14 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+        #jqrpg_object15 {
+	 left: 0;
+ 	 position: absolute;
+	 top: 0;
+	 z-index: 998;
+	}
+	.object_a {
+	 background-image: url(images/object_a.png);
+	}
+	.object_b {
+	 background-image: url(images/object_b.png);
+	}
+	.object_c {
+	 background-image: url(images/object_c.png);
+	}
 #jqrpg_map span.tile {
  float: left;
 }
@@ -127,4 +233,28 @@ body {
 }
 .tile_w { /* water */
  background: #224;
+}
+
+
+
+#jqrpg_object {
+ display: none;
+}
+#jqrpg_object span.jqrpg_object {
+ float: left;
+}
+.object_row {
+ clear: left;
+}
+.object {
+ clear: left;
+}
+.object_01 { 
+ background-image: url(images/object_1.png);
+}
+.object_02 { 
+ background-image: url(images/object_2.png);
+}
+.object_03 { 
+ background-image: url(images/object_3.png);
 }

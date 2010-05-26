@@ -6,6 +6,7 @@ function jqrpgBuildInterface() {
 	$('#jqrpg_wrapper').width($('#jqrpg_screen').width());
 }
 
+// call at the start of each level
 function jqrpgBuildMapHtml() {
 	$('#jqrpg_screen, #jqrpg_wrapper').height(jqr.map.height 
            * jqr.settings.sprite_height)
@@ -32,8 +33,9 @@ function jqrpgResetPlayer() {
 function jqrpgResetMap(mapId) {
     jqr.map.height 	= mapset.height[mapId];
     jqr.map.width 	= mapset.width[mapId];
-    jqr.map.terrain	= mapset.picture[mapId];
+    jqr.map.terrain	= mapset.terrain[mapId];
     jqr.map.portals     = mapset.portals[mapId];
+    jqr.map.objects     = mapset.objects[mapId];
 }
 
 // Call this whenever a new screen is entered 
@@ -44,7 +46,7 @@ function jqrpgUpdateMapClasses() {
 			ct = $('#jqrpg_map span').eq(cti);
 			ct.removeClass()
 			 .addClass('tile')
-			 .addClass('tile_x' + x + 'y'+ y)
+			 //.addClass('tile_x' + x + 'y'+ y)
 			 .addClass('tile_' + jqr.map.terrain[cti]);
 			if (y && x == 0) ct.addClass('tile_row');
 		}
@@ -52,8 +54,28 @@ function jqrpgUpdateMapClasses() {
 	$('#jqrpg_map').fadeIn('slow');
 }
 
+function jqrpgUpdateObjects() {
+        objId = 0;  //
+	for (y = 0; y < jqr.map.height; y++) {
+		for (x = 0; x < jqr.map.width; x++) {
+			cti = y * jqr.map.height + x; // current_tile_index
+                        if (jqr.map.objects[cti] != ' ') {
+                            objOnMap = '#jqrpg_object' + objId;
+                            $(objOnMap).css({
+                                'left' : x * jqr.settings.sprite_width,
+                                'top' : y * jqr.settings.sprite_height
+                            });
+                            objSpriteType = 'object_' + 
+                              jqr.map.objects[cti];
+                            $(objOnMap).removeClass().addClass(objSpriteType).addClass('sprites');;
+                            objId++;
+                        }
+		}
+        }
+}
+
 function jqrpgSetPlayerFace(new_face) {
-	$('#jqrpg_player').removeClass().addClass('face_' + new_face);
+	$('#jqrpg_player').removeClass().addClass('face_' + new_face).addClass('sprites');
 }
 
 function jqrpgSetPlayer(new_x, new_y) {
@@ -127,7 +149,6 @@ function jqrpgMovePlayer(new_x, new_y) {
             if (jqr.p.x + new_x == jqr.map.portals[count] 
              && jqr.p.y + new_y == jqr.map.portals[count+1]
             ) {
-              // FIXME
               jqr.settings.currentMapId = jqr.map.portals[count+2];
               jqr.p.x = jqr.map.portals[count+3];
               jqr.p.y = jqr.map.portals[count+4];
@@ -137,6 +158,7 @@ function jqrpgMovePlayer(new_x, new_y) {
 	      jqr.p.state = 'map';
               jqrpgSetPlayerFace(jqr.p.face);
               jqrpgSetPlayer(jqr.p.x, jqr.p.y);
+              jqrpgUpdateObjects();
               return;
             }
         }
@@ -223,7 +245,7 @@ jqr.settings.sprite_width = 16;
 jqr.settings.sprite_height = 16;
 jqr.settings.space = false;
 jqr.settings.currentAnswer = '';
-jqr.settings.currentMapId = 1;
+jqr.settings.currentMapId = 0;
 
 jqr.p = new Object();
 
@@ -242,6 +264,7 @@ jqrpgUpdateMapClasses();
 jqrpgResetPlayer();
 jqrpgSetPlayerFace(jqr.p.face);
 jqrpgSetPlayer(jqr.p.x, jqr.p.y);
+jqrpgUpdateObjects();
 jqrpgBindKeys();
 
 });
