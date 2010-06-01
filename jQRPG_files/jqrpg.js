@@ -188,10 +188,11 @@ function jqrpgMovePlayer(new_x, new_y) {
 	         $('#jqrpg_object'+count).removeClass().addClass('sprites');
                  // Remove from the mapset too, or it'll come back!
 		 cti = jqr.p.y * jqr.map.height + jqr.p.x; 
-                 alert(mapset.objects[jqr.settings.currentMapId][cti]);
-                 // FIXME: the following doesn't work because strings
-                 // aren't proper arrays, I guess.
-                 mapset.objects[jqr.settings.currentMapId][cti] = ' ';
+                 newMapsetObjects =
+                    mapset.objects[jqr.settings.currentMapId].slice(0,cti) +
+                    ' '+
+                    mapset.objects[jqr.settings.currentMapId].slice(cti+1);
+                 mapset.objects[jqr.settings.currentMapId] = newMapsetObjects;
             }
         }
 

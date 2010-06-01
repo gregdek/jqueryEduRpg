@@ -75,7 +75,17 @@ body {
  position: absolute;
  width: 100%;
 }
-
+#jqrpg_status {
+ background: #000;
+ background: rgba(0,0,0,0.5);
+ top: 0;
+ color: #fff;
+ font: 8px/1 'Consolas', 'Lucida Console', Monaco, Monospace;
+ overflow: hidden;
+ padding: 1em;
+ position: absolute;
+ width: 100%;
+}
 #jqrpg_map {
  display: none;
 }
