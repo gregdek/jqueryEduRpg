@@ -204,13 +204,13 @@ body {
 	 top: 0;
 	 z-index: 998;
 	}
-	.object_a {
+	.object_0 {
 	 background-image: url(images/object_a.png);
 	}
-	.object_b {
+	.object_1 {
 	 background-image: url(images/object_b.png);
 	}
-	.object_c {
+	.object_2 {
 	 background-image: url(images/object_c.png);
 	}
 #jqrpg_map span.tile {
@@ -235,26 +235,3 @@ body {
  background: #224;
 }
 
-
-
-#jqrpg_object {
- display: none;
-}
-#jqrpg_object span.jqrpg_object {
- float: left;
-}
-.object_row {
- clear: left;
-}
-.object {
- clear: left;
-}
-.object_01 { 
- background-image: url(images/object_1.png);
-}
-.object_02 { 
- background-image: url(images/object_2.png);
-}
-.object_03 { 
- background-image: url(images/object_3.png);
-}

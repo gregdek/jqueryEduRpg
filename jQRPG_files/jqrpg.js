@@ -28,6 +28,12 @@ function jqrpgResetPlayer() {
 	jqr.p.x = mapset.startx[jqr.settings.currentMapId];
 	jqr.p.y = mapset.starty[jqr.settings.currentMapId];
 	jqr.p.state = 'map';
+        // inventory is simple for now.  Items are just
+        // counts in an array.
+        jqr.p.inventory = new Array();
+        for (i = 0; i < jqr.settings.maxItemTypes; i++) {
+                jqr.p.inventory[i] = 0;
+        }
 }
 
 function jqrpgResetMap(mapId) {
@@ -46,7 +52,7 @@ function jqrpgUpdateMapClasses() {
 			ct = $('#jqrpg_map span').eq(cti);
 			ct.removeClass()
 			 .addClass('tile')
-			 //.addClass('tile_x' + x + 'y'+ y)
+			 .addClass('tile_x' + x + 'y'+ y)
 			 .addClass('tile_' + jqr.map.terrain[cti]);
 			if (y && x == 0) ct.addClass('tile_row');
 		}
@@ -67,11 +73,12 @@ function jqrpgUpdateObjects() {
                             });
                             objSpriteType = 'object_' + 
                               jqr.map.objects[cti];
-                            $(objOnMap).removeClass().addClass(objSpriteType).addClass('sprites');;
+                            $(objOnMap).removeClass().addClass(objSpriteType).addClass('sprites').addClass('tile_x' + x + 'y'+ y);
                             objId++;
                         }
 		}
         }
+        jqr.map.objectCount = objId;
 }
 
 function jqrpgSetPlayerFace(new_face) {
@@ -142,10 +149,11 @@ function jqrpgMovePlayer(new_x, new_y) {
 	 || !jqrpgIsTileWalkable(jqr.p.x + new_x, jqr.p.y + new_y)
 	) return;
 
+
         // will new_x, new_y take us to a new map?
         // return with new map and new coords.
 
-        for (count=0; count<=jqr.map.portals[length]; count+=5) {
+        for (count=0; count<=jqr.map.portals.length; count+=5) {
             if (jqr.p.x + new_x == jqr.map.portals[count] 
              && jqr.p.y + new_y == jqr.map.portals[count+1]
             ) {
@@ -163,9 +171,31 @@ function jqrpgMovePlayer(new_x, new_y) {
             }
         }
 
+        // Move is successful!  Set new coords.
 	jqr.p.x += new_x;	jqr.p.y += new_y;
-        // regular move, animate the sequence normally
 
+        // Is there an object present?  Pick it up!
+        objectClassId = "tile_x" + jqr.p.x + "y" + jqr.p.y;
+        for (count=0; count<=jqr.map.objectCount; count++) {
+            if ($('#jqrpg_object'+count).hasClass(objectClassId)) {
+                 for (count2=0; count2<=jqr.settings.itemTypeCount; count2++) {
+                     if ($('#jqrpg_object'+count).hasClass('object_'+count2)) {
+                         // alert("found object " + count2);
+                         jqr.p.inventory[count2] += 1;
+                     }
+                 }
+                 // Remove from screen.
+	         $('#jqrpg_object'+count).removeClass().addClass('sprites');
+                 // Remove from the mapset too, or it'll come back!
+		 cti = jqr.p.y * jqr.map.height + jqr.p.x; 
+                 alert(mapset.objects[jqr.settings.currentMapId][cti]);
+                 // FIXME: the following doesn't work because strings
+                 // aren't proper arrays, I guess.
+                 mapset.objects[jqr.settings.currentMapId][cti] = ' ';
+            }
+        }
+
+        // Now let's animate our move! 
 	$('#jqrpg_player').dequeue().animate({
 	 left: jqr.p.x * jqr.settings.sprite_width,
 	 top: jqr.p.y * jqr.settings.sprite_height
@@ -184,7 +214,8 @@ function jqrpgIsTileWalkable(x, y) {
 
 // Battle functions
 function jqrpgGetRandomBattle() {
-	var likelihood = Math.floor(Math.random() * 6) + 1;
+        // setting to a very low likelihood for testing
+	var likelihood = Math.floor(Math.random() * 1000) + 1;
 	if (likelihood == 1) {
 		jqrpgBattleInit();
 	}
@@ -246,6 +277,7 @@ jqr.settings.sprite_height = 16;
 jqr.settings.space = false;
 jqr.settings.currentAnswer = '';
 jqr.settings.currentMapId = 0;
+jqr.settings.itemTypeCount = 3;
 
 jqr.p = new Object();
 
